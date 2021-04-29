@@ -1,13 +1,20 @@
 package pages;
 
 import core.LayoutPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import config.ConfigProperties;
+import org.openqa.selenium.support.ui.Select;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 public class AdvancedSearchPage extends LayoutPage
 {
@@ -60,6 +67,13 @@ public class AdvancedSearchPage extends LayoutPage
     @FindBy(xpath = "//ul[@class=\"regions-list\"]/li/child::label")
     List<WebElement> regionsList;
 
+    //Локатор - селект выбора месяца в фильтре даты
+    @FindBy(xpath = "//select[@class = \"react-datepicker__month-select\"]")
+    WebElement monthSelect;
+
+    @FindBy(xpath = "//select[@class = \"react-datepicker__year-select\"]")
+    WebElement yearSelect;
+
     public AdvancedSearchPage(WebDriver driver)
     {
         super(driver);
@@ -70,11 +84,32 @@ public class AdvancedSearchPage extends LayoutPage
         super.GetDriver().get(ConfigProperties.GetProperty("defaultUrl"));
     }
 
-    public void DateFilterClick()
+    public void DateFilterClick() {dateFilter.click();}
+
+    private String GetDayOfWeek(int day,int month,int year)
     {
-        dateFilter.click();
+        var dayOfWeek = LocalDate.of(year,month,day).getDayOfWeek();
+        return dayOfWeek.getDisplayName(TextStyle.FULL,new Locale("ru"));
     }
 
+    private String GetMonthOfYear(int day,int month,int year)
+    {
+        Month monthEng =  LocalDate.of(year,month,day).getMonth();
+        return monthEng.getDisplayName(TextStyle.FULL,new Locale("ru"));
+    }
+    //month - [0..11]
+    public void SetDateFilter(int day,int month,int year)
+    {
+        Select selectMonth = new Select(monthSelect);
+        selectMonth.selectByValue(String.valueOf(month));
+        Select selectYear = new Select(yearSelect);
+        selectYear.selectByValue(String.valueOf(year));
+        String dayOfWeek = this.GetDayOfWeek(day,month+1,year);
+        String monthName = this.GetMonthOfYear(day,month+1, year);
+        WebElement selectDay = super.GetDriver().findElement(By.xpath("//div[contains(@aria-label,\""+dayOfWeek+", "+day +"-е "+monthName+"\")]"));
+        selectDay.click();
+        return;
+    }
     public void ExcludeJointPurchases()
     {
         excludeJointPurchasesCheckbox.click();

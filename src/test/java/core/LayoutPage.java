@@ -19,15 +19,22 @@ public class LayoutPage
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
-    public boolean IsElementPresent(By element) {
+    public boolean IsElementPresent(By element)
+    {
         try
         {
+            Thread.sleep(2000);
             driver.findElement(element);
             return true;
-        } catch (NoSuchElementException e)
+        }
+        catch (NoSuchElementException e)
+        {
+
+            return false;
+        }
+        catch (InterruptedException e)
         {
             return false;
         }
     }
-
 }

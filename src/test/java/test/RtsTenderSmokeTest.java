@@ -50,32 +50,23 @@ public class RtsTenderSmokeTest
         advancedSearchPage.Rf615Click();
         // нажимаем на включить совместные закупки
         advancedSearchPage.ExcludeJointPurchases();
-        // нажимаем на фильтр даты
+        // устанавливаем значения фильтров даты
         advancedSearchPage.DateFilterClick();
-        // устанавливаем текущую дату в фильтры даты
         advancedSearchPage.OpenDatePickerFrom();
-        advancedSearchPage.SetCurrentDate();
+        advancedSearchPage.SetDateFilter(1,11,2010);//month - [0..11]
         advancedSearchPage.OpenDatePickerTo();
         advancedSearchPage.SetCurrentDate();
 
         // открываем фильтр "регион поставки"
         advancedSearchPage.RegionFilterClick();
-        advancedSearchPage.SetRegionFilter(new String[]{"Алтайский край","Москва"});
+        advancedSearchPage.SetRegionFilter(new String[]{"Алтайский край","Москва","Краснодарский край"});
 
         //нажимаем на кнопку фильтрации "Найти"
         FilteredPage filteredPage = advancedSearchPage.AdvancedFilterSearchClick();
-        //Считываем данные "Начальная цена" и "Кол-во закупок"
+        //Считываем данные "Начальная цена" и "Кол-во закупок
+
         while(filteredPage.NextBtnPageIsPresent())
         {
-            //Переделать этот участок
-            try
-            {
-                Thread.sleep(5000);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
 
             //Запись в лог
             for (int i=0;i<filteredPage.GetStartPricesList().size();i++)
@@ -85,7 +76,6 @@ public class RtsTenderSmokeTest
             }
             filteredPage.NextBtnPageClick();
         }
-
     }
 
 }
