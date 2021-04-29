@@ -15,12 +15,15 @@ import java.util.List;
 
 public class FilteredPage extends LayoutPage
 {
+    //Локатор для считывания поля "Начальная цена"
     @FindBy(xpath = "//div[@itemprop=\"price\"]")
     private List<WebElement> startPrices;
 
+    //Локатор для считывания поля "Кол-во закупок"
     @FindBy(xpath = "//table[@class=\"card-table\"]//td[3]")
     private List<WebElement> purchaseNumbers;
 
+    //Локатор - кнопка для переключение на следующую страницу
     @FindBy(xpath = "//a[@class=\"page-link next\"]")
     private WebElement nextBtnPage;
 
@@ -37,6 +40,7 @@ public class FilteredPage extends LayoutPage
         }
     }
 
+    //Проверка наличия элемента в DOM
     public boolean NextBtnPageIsPresent()
     {
         if (super.IsElementPresent(By.xpath("//a[@class=\"page-link next\"]")))

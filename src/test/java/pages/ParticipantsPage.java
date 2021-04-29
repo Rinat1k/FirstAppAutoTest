@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 public class ParticipantsPage extends LayoutPage
 {
 
+    //Локатор - кнопка перехода на страницу расширенного поиска
     @FindBy(xpath = "//a[contains(@href,'/poisk/poisk-223-fz/')]")
     WebElement advancedSearchBtn;
 
