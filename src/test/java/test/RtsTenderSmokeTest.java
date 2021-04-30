@@ -8,6 +8,7 @@ import pages.FilteredPage;
 import pages.ParticipantsPage;
 import config.ConfigProperties;
 
+import java.util.ArrayList;
 import java.util.logging.*;
 import java.util.concurrent.TimeUnit;
 import java.io.*;
@@ -22,7 +23,7 @@ public class RtsTenderSmokeTest
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
-        var logger = Logger.getLogger("MyLog");
+        var logger = Logger.getLogger("RTS-TENDER-LOG");
         FileHandler fh;
         try
         {
@@ -63,16 +64,24 @@ public class RtsTenderSmokeTest
 
         //нажимаем на кнопку фильтрации "Найти"
         FilteredPage filteredPage = advancedSearchPage.AdvancedFilterSearchClick();
+        filteredPage.ConsultationBtnClick();
+        filteredPage.closeConsulatationModalWindowBtnClick();
         //Считываем данные "Начальная цена" и "Кол-во закупок
-
-        while(filteredPage.NextBtnPageIsPresent())
-        {
-
+        ArrayList<String> startPricesList; ArrayList<ArrayList<String>> purchaseNumberList;
+         while(filteredPage.NextBtnPageIsPresent())
+         {
+            startPricesList = filteredPage.GetStartPricesList();
+            purchaseNumberList = filteredPage.GetPurchaseNumbersList();
             //Запись в лог
             for (int i=0;i<filteredPage.GetStartPricesList().size();i++)
             {
-                logger.info("Начальная цена: " + filteredPage.GetStartPricesList().get(i)
-                        + " Кол-во закупок: "+ filteredPage.GetPurchaseNumbersList().get(i));
+                logger.info("Закупка "+ i);
+                logger.info("Начальная цена: " + startPricesList.get(i));
+                logger.info("Количество закупок: ");
+                for (int j=0;j<purchaseNumberList.get(i).size();j++)
+                {
+                    logger.info("Закупка "+j+": "+purchaseNumberList.get(i).get(j));
+                }
             }
             filteredPage.NextBtnPageClick();
         }

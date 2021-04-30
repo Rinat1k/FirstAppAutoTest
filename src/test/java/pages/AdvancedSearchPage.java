@@ -79,11 +79,6 @@ public class AdvancedSearchPage extends LayoutPage
         super(driver);
     }
 
-    public void open()
-    {
-        super.GetDriver().get(ConfigProperties.GetProperty("defaultUrl"));
-    }
-
     public void DateFilterClick() {dateFilter.click();}
 
     private String GetDayOfWeek(int day,int month,int year)

@@ -23,7 +23,7 @@ public class LayoutPage
     {
         try
         {
-            Thread.sleep(2000);
+            Thread.sleep(1500);
             driver.findElement(element);
             return true;
         }
