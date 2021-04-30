@@ -45,12 +45,16 @@ public class RtsTenderSmokeTest
         participantsPage.open();
 
         AdvancedSearchPage advancedSearchPage = participantsPage.AdvancedSearchBtnClick();
-        // пронажимаем на расширенный поиск
+
+        // нажимаем на расширенный поиск
         advancedSearchPage.SettingsButtonClick();
+
         // нажимаем на 615-ПП РФ
         advancedSearchPage.Rf615Click();
+
         // нажимаем на включить совместные закупки
         advancedSearchPage.ExcludeJointPurchases();
+
         // устанавливаем значения фильтров даты
         advancedSearchPage.DateFilterClick();
         advancedSearchPage.OpenDatePickerFrom();
@@ -60,18 +64,22 @@ public class RtsTenderSmokeTest
 
         // открываем фильтр "регион поставки"
         advancedSearchPage.RegionFilterClick();
-        advancedSearchPage.SetRegionFilter(new String[]{"Алтайский край","Москва","Краснодарский край"});
+        advancedSearchPage.SetRegionFilter(new String[]{"Алтайский край","Москва","Краснодарский край",""});
 
         //нажимаем на кнопку фильтрации "Найти"
         FilteredPage filteredPage = advancedSearchPage.AdvancedFilterSearchClick();
+
+        //Закрываем всплывающее окно "Поможем в любой ситуации"
         filteredPage.ConsultationBtnClick();
         filteredPage.closeConsulatationModalWindowBtnClick();
+
         //Считываем данные "Начальная цена" и "Кол-во закупок
         ArrayList<String> startPricesList; ArrayList<ArrayList<String>> purchaseNumberList;
          while(filteredPage.NextBtnPageIsPresent())
          {
             startPricesList = filteredPage.GetStartPricesList();
             purchaseNumberList = filteredPage.GetPurchaseNumbersList();
+
             //Запись в лог
             for (int i=0;i<filteredPage.GetStartPricesList().size();i++)
             {
@@ -86,5 +94,4 @@ public class RtsTenderSmokeTest
             filteredPage.NextBtnPageClick();
         }
     }
-
 }

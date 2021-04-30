@@ -6,12 +6,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import config.ConfigProperties;
 import org.openqa.selenium.support.ui.Select;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.Year;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +69,7 @@ public class AdvancedSearchPage extends LayoutPage
     @FindBy(xpath = "//select[@class = \"react-datepicker__month-select\"]")
     WebElement monthSelect;
 
+    //Локатор - селект выбора года в фильтре даты
     @FindBy(xpath = "//select[@class = \"react-datepicker__year-select\"]")
     WebElement yearSelect;
 
