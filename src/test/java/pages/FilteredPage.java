@@ -11,6 +11,10 @@ import java.util.List;
 
 public class FilteredPage extends LayoutPage
 {
+    //Локатор для считывания идентификатора закупки в ЕИС
+    @FindBy(xpath = "//div[@class=\"card-item__about\"]//a")
+    private List<WebElement> purchacesId;
+
     //Локатор для считывания поля "Начальная цена"
     @FindBy(xpath = "//div[@itemprop=\"price\"]")
     private List<WebElement> startPrices;
@@ -46,19 +50,17 @@ public class FilteredPage extends LayoutPage
         }
     }
 
+    public int GetMaxNumberPageList()
+    {
+        List <WebElement> pageNumbersList = super.GetDriver().findElements(By.xpath("//a[@class = \"page-link\"]"));
+        var pageIntNumbersList = pageNumbersList.stream().map(s->Integer.parseInt(s.getText())).toList();
+        int maxPageNumberValue = pageIntNumbersList.stream().max(Integer::compare).get();
+        return maxPageNumberValue;
+    }
     //Проверка наличия элемента в DOM
     public boolean NextBtnPageIsPresent()
     {
-        if (super.IsElementPresent(By.xpath("//a[@class=\"page-link next\"]")))
-        {
-            System.out.println("Переход на след. страницу доступен");
-            return true;
-        }
-        else
-        {
-            System.out.println("Переход на след. страницу недоступен");
-            return false;
-        }
+       return (super.IsElementPresent(By.xpath("//a[@class=\"page-link next\"]")));
     }
 
     public void NextBtnPageClick()
@@ -66,9 +68,19 @@ public class FilteredPage extends LayoutPage
         nextBtnPage.click();
     }
 
+    public ArrayList<String> GetPurchacesId()
+    {
+        ArrayList<String> purchacesId = new ArrayList<>();
+        for (int i=0; i<this.purchacesId.size();i++)
+        {
+            purchacesId.add(this.purchacesId.get(i).getText());
+        }
+        return  purchacesId;
+    }
+
     public ArrayList<String> GetStartPricesList()
     {
-        ArrayList<String> startPricesContent = new ArrayList<String>();
+        ArrayList<String> startPricesContent = new ArrayList<>();
         for (int i=0;i<this.startPrices.size();i++)
         {
             startPricesContent.add(this.startPrices.get(i).getAttribute("content"));
@@ -78,27 +90,32 @@ public class FilteredPage extends LayoutPage
     //Метод возвращающий Xpath запрос для элемента "Количество закупок"
     private String GetActivePurchaseNumberXPath(int cardItemIndex,int trIndex)
     {
-        return "//div[@class=\"cards\"]["+String.valueOf(cardItemIndex)+"]//div[@class=\"card-item\"]//tr["+String.valueOf(trIndex)+"]/td[3]";
+        return "//div[@class=\"cards\"]["+cardItemIndex+"]//div[@class=\"card-item\"]//tr["+trIndex+"]/td[3]";
     }
 
     public ArrayList<ArrayList<String>> GetPurchaseNumbersList()
     {
+        WebElement showMore;
         int cardItemSize = super.GetDriver().findElements(By.xpath("//div[@class=\"cards\"]//div[@class=\"card-item\"]")).size();
         ArrayList<ArrayList<String>> purchaseNumbersContentResult = new ArrayList<ArrayList<String>>();
         int cardItemIndex=1; //Минимально возможный индекс элемента закупки в запросе Xpath
         int trIndex=2;//Минимально возможный индекс поля "количество закупок" в запросе Xpath
-        ArrayList<String> middlewareList = new ArrayList<String>();
+        ArrayList<String> middlewareList = new ArrayList<>();
         int purchaseNumberElementSize;
         WebElement activePurchaseNumberElement;
         for (int i=0;i<cardItemSize;i++,cardItemIndex++) {
+            if (super.IsElementPresent(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]")))
+            {
+                showMore = super.GetDriver().findElement(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]"));
+                showMore.click();
+            }
             purchaseNumberElementSize = super.GetDriver()
                     .findElements(By.xpath("//div[@class=\"cards\"][" + cardItemIndex + "]//div[@class=\"card-item\"]//tr/td[3]"))
                     .size();
             trIndex = 2;
-            middlewareList = new ArrayList<String >(); //через .clear() не работает
+            middlewareList = new ArrayList<>(); //через .clear() не работает
             for (int j = 0; j < purchaseNumberElementSize; j++, trIndex++) {
-                activePurchaseNumberElement = super.GetDriver()
-                        .findElement(By.xpath(GetActivePurchaseNumberXPath(cardItemIndex, trIndex)));
+                activePurchaseNumberElement = super.GetDriver().findElement(By.xpath(GetActivePurchaseNumberXPath(cardItemIndex, trIndex)));
                  middlewareList.add(activePurchaseNumberElement.getText());
             }
             purchaseNumbersContentResult.add(middlewareList);
