@@ -1,8 +1,7 @@
-package pages;
+package RtsTenderPages;
 
-import core.LayoutPage;
+import core.TestBase;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -14,7 +13,7 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 
-public class AdvancedSearchPage extends LayoutPage
+public class AdvancedSearchPage extends TestBase
 {
 
     //Локатор - кнопка "Расширенные настройки"
@@ -73,9 +72,9 @@ public class AdvancedSearchPage extends LayoutPage
     @FindBy(xpath = "//select[@class = \"react-datepicker__year-select\"]")
     WebElement yearSelect;
 
-    public AdvancedSearchPage(WebDriver driver)
+    public AdvancedSearchPage()
     {
-        super(driver);
+        super();
     }
 
     public void DateFilterClick() {dateFilter.click();}

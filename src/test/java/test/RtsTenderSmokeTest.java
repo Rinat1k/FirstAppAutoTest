@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.junit.Test;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.chrome.ChromeDriver;
-import pages.AdvancedSearchPage;
-import pages.FilteredPage;
-import pages.ParticipantsPage;
+import RtsTenderPages.AdvancedSearchPage;
+import RtsTenderPages.FilteredPage;
+import RtsTenderPages.ParticipantsPage;
 import config.ConfigProperties;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class RtsTenderSmokeTest
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
-        ParticipantsPage participantsPage = new ParticipantsPage(driver);
+        ParticipantsPage participantsPage = new ParticipantsPage();
         participantsPage.open();
         logger.info("Произошло открытие страницы \"Поставщикам\": " + driver.getCurrentUrl());
         AdvancedSearchPage advancedSearchPage = participantsPage.AdvancedSearchBtnClick();
@@ -114,5 +114,6 @@ public class RtsTenderSmokeTest
                 e.printStackTrace();
             }
         }
+        driver.quit();
     }
 }

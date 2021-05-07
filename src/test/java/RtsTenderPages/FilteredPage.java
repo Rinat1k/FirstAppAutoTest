@@ -1,6 +1,7 @@
-package pages;
+package RtsTenderPages;
 
-import core.LayoutPage;
+import OnlineTradePages.LayoutPage;
+import core.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilteredPage extends LayoutPage
+public class FilteredPage extends TestBase
 {
     //Локатор для считывания идентификатора закупки в ЕИС
     @FindBy(xpath = "//div[@class=\"card-item__about\"]//a")
@@ -39,7 +40,7 @@ public class FilteredPage extends LayoutPage
 
     public FilteredPage(WebDriver driver)
     {
-        super(driver);
+        super();
         try
         {
             Thread.sleep(5000);
@@ -60,7 +61,8 @@ public class FilteredPage extends LayoutPage
     //Проверка наличия элемента в DOM
     public boolean NextBtnPageIsPresent()
     {
-       return (super.IsElementPresent(By.xpath("//a[@class=\"page-link next\"]")));
+        LayoutPage layoutPage = new LayoutPage(super.GetDriver());
+       return (layoutPage.IsElementPresent(By.xpath("//a[@class=\"page-link next\"]")));
     }
 
     public void NextBtnPageClick()
@@ -95,6 +97,7 @@ public class FilteredPage extends LayoutPage
 
     public ArrayList<ArrayList<String>> GetPurchaseNumbersList()
     {
+        LayoutPage layoutPage = new LayoutPage(super.GetDriver());
         WebElement showMore;
         int cardItemSize = super.GetDriver().findElements(By.xpath("//div[@class=\"cards\"]//div[@class=\"card-item\"]")).size();
         ArrayList<ArrayList<String>> purchaseNumbersContentResult = new ArrayList<ArrayList<String>>();
@@ -104,7 +107,7 @@ public class FilteredPage extends LayoutPage
         int purchaseNumberElementSize;
         WebElement activePurchaseNumberElement;
         for (int i=0;i<cardItemSize;i++,cardItemIndex++) {
-            if (super.IsElementPresent(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]")))
+            if (layoutPage.IsElementPresent(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]")))
             {
                 showMore = super.GetDriver().findElement(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]"));
                 showMore.click();

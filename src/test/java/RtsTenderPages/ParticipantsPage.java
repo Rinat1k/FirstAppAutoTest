@@ -1,32 +1,31 @@
-package pages;
+package RtsTenderPages;
 
 import config.ConfigProperties;
-import core.LayoutPage;
-import org.openqa.selenium.WebDriver;
+import core.TestBase;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class ParticipantsPage extends LayoutPage
+public class ParticipantsPage extends TestBase
 {
 
     //Локатор - кнопка перехода на страницу расширенного поиска
     @FindBy(xpath = "//a[contains(@href,'/poisk/poisk-223-fz/')]")
     WebElement advancedSearchBtn;
 
-    public ParticipantsPage(WebDriver driver)
+    public ParticipantsPage()
     {
-        super(driver);
+        super();
     }
 
     public void open()
     {
-        super.GetDriver().get(ConfigProperties.GetProperty("defaultUrl"));
+        super.GetDriver().get(ConfigProperties.GetProperty("defaultUrlForRtsTender"));
     }
 
     public AdvancedSearchPage AdvancedSearchBtnClick()
     {
         advancedSearchBtn.click();
-        return new AdvancedSearchPage(super.GetDriver());
+        return new AdvancedSearchPage();
     }
 
 }
