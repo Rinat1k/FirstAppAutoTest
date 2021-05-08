@@ -7,8 +7,6 @@ import org.openqa.selenium.support.FindBy;
 
 public class SignInPage extends LayoutPage
 {
-    private WebDriver driver;
-
     @FindBy(xpath = "//input[@name=\"login\"]")
     WebElement emailInput;
 
