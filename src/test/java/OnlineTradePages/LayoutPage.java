@@ -21,6 +21,9 @@ public class LayoutPage
      @FindBy(xpath = "//a[@href=\"/catalogue/\"]")
      private WebElement catalogBtn;
 
+     @FindBy(xpath = "//div[contains(@class,\"basketCover\")]")
+     private WebElement basketBtn;
+
      public LayoutPage(WebDriver driver)
      {
           this.driver = driver;
@@ -38,6 +41,8 @@ public class LayoutPage
      {
           this.catalogBtn.click();
      }
+
+     public void BasketBtnClick() {this.basketBtn.click();}
 
      public void LoginBtnClick()
      {

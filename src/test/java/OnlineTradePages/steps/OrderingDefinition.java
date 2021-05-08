@@ -61,18 +61,18 @@ public class OrderingDefinition extends TestBase
         layoutPage.CatalogBtnClick();
     }
 
-    @И("^выбирает желаемую категорию$")
-    public void ChooseDesiredCategory()
+    @И("выбирает желаемую категорию: {string}")
+    public void ChooseDesiredCategory(String category)
     {
-        layoutPage.CategoryClick("Сад и огород");
+        layoutPage.CategoryClick(category);
     }
 
-    @И("^желаемый тип товара$")
-    public void ChooseDesiredProductType()
+    @И("желаемый тип - {string} и подтипы товара - {string} {string}")
+    public void ChooseDesiredProductType(String productType, String productSubtype1,String productSubtype2)
     {
-        catalogPage.ProductTypeClick("Уличное освещение для дома и сада");
-        catalogPage.ProductTypeClick("Дюралайт");
-        catalogPage.ProductTypeClick("Шнуры Дюралайт");
+        catalogPage.ProductTypeClick(productType);
+        catalogPage.ProductTypeClick(productSubtype1);
+        catalogPage.ProductTypeClick(productSubtype2);
     }
 
     @Затем("^покупатель осуществляет фильтрацию товаров$")
@@ -81,13 +81,20 @@ public class OrderingDefinition extends TestBase
         //переписать эти методы
         catalogPage.InStockFilterClick();
         catalogPage.FilterBtnClick();
-        this.TakeAScreenshot();
     }
 
     @И("выбирает желаемые товары")
     public void ChooseDesiredProduct()
     {
-        //
+        catalogPage.GetDriver().findElement(By.xpath("//div[@class=\"indexGoods__item\"][1]//a[text()=\"Купить\"]")).click();
+        catalogPage.CloseModalWindowBtnClick();
     }
+
+    @Затем("^покупатель переходит на страницу оформления заказов$")
+    public void CustomerGoesToBasket()
+    {
+        layoutPage.BasketBtnClick();
+    }
+
 ////div[@class="indexGoods__item"][1]//a[contains(@title,"Купить")]
 }
