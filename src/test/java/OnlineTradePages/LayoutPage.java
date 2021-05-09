@@ -42,12 +42,17 @@ public class LayoutPage
           this.catalogBtn.click();
      }
 
-     public void BasketBtnClick() {this.basketBtn.click();}
+     public BasketPage BasketBtnClick()
+     {
+          this.basketBtn.click();
+          return new BasketPage(this.driver);
+     }
 
-     public void LoginBtnClick()
+     public SignInPage LoginBtnClick()
      {
           this.loginBtn.findElement(By.xpath("//a[@href=\"/member/login.html\"]"));
           this.loginBtn.click();
+          return new SignInPage(this.driver);
      }
 
      public void HeaderLogoClick()
@@ -55,9 +60,10 @@ public class LayoutPage
           this.headerLogo.click();
      }
 
-     public void CategoryClick(String categoryTitle)
+     public CatalogPage CategoryClick(String categoryTitle)
      {
           driver.findElement(By.xpath("//a[contains(text(),\""+categoryTitle+"\")]")).click();
+          return new CatalogPage(this.driver);
      }
 
      public boolean IsElementPresent(By element)

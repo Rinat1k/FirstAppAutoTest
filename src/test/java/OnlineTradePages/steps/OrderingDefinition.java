@@ -1,5 +1,6 @@
 package OnlineTradePages.steps;
 
+import OnlineTradePages.BasketPage;
 import OnlineTradePages.CatalogPage;
 import OnlineTradePages.LayoutPage;
 import OnlineTradePages.SignInPage;
@@ -18,82 +19,91 @@ public class OrderingDefinition extends TestBase
 
     private CatalogPage catalogPage;
 
+    private BasketPage basketPage;
+
     @Before
     public void Init()
     {
         System.out.println("Начало теста...");
         this.Start();
-        layoutPage = new LayoutPage(this.GetDriver());
-        signInPage = new SignInPage(this.GetDriver());
-        catalogPage = new CatalogPage(this.GetDriver());
+        this.layoutPage = new LayoutPage(this.GetDriver());
     }
 
     @Дано("^покупатель переходит на главную страницу$")
     public void CustomerGoesToMainPage()
     {
-        layoutPage.HeaderLogoClick();
+        this.layoutPage.HeaderLogoClick();
     }
 
     @Если("^покупатель открывает модальное окно авторизации$")
     public void RegisteredCustomerOpenAuthModalWindow()
     {
-        layoutPage.LoginBtnClick();
+        this.signInPage=layoutPage.LoginBtnClick();
     }
 
     @И("^вводит корректные реквизиты для входа$")
     public void RegisteredCustomerEntersCorrectCredentials()
     {
-        signInPage.SetEmailInput(ConfigProperties.GetProperty("signInEmail"));
-        signInPage.SetPasswordInput(ConfigProperties.GetProperty("signInPassword"));
-        signInPage.AutoLoginCheckBoxClick();
-        signInPage.SignInBtnClick();
+        this.signInPage.SetEmailInput(ConfigProperties.GetProperty("signInEmail"));
+        this.signInPage.SetPasswordInput(ConfigProperties.GetProperty("signInPassword"));
+        this.signInPage.AutoLoginCheckBoxClick();
+        this.signInPage.SignInBtnClick();
     }
 
     @То("^покупатель успешно авторизуется$")
     public void CustomerAuthorized()
     {
-        Assert.assertTrue(signInPage.IsElementPresent(By.xpath("//a[@href=\"/member/\"]")));
+        Assert.assertTrue(this.signInPage.IsElementPresent(By.xpath("//a[@href=\"/member/\"]")));
     }
 
     @Затем("^покупатель открывает каталог$")
     public void CustomerOpensCatalog()
     {
-        layoutPage.CatalogBtnClick();
+        this.layoutPage.CatalogBtnClick();
     }
 
     @И("выбирает желаемую категорию: {string}")
     public void ChooseDesiredCategory(String category)
     {
-        layoutPage.CategoryClick(category);
+        this.catalogPage=this.layoutPage.CategoryClick(category);
     }
 
     @И("желаемый тип - {string} и подтипы товара - {string} {string}")
     public void ChooseDesiredProductType(String productType, String productSubtype1,String productSubtype2)
     {
-        catalogPage.ProductTypeClick(productType);
-        catalogPage.ProductTypeClick(productSubtype1);
-        catalogPage.ProductTypeClick(productSubtype2);
+        this.catalogPage.ProductTypeClick(productType);
+        this.catalogPage.ProductTypeClick(productSubtype1);
+        this.catalogPage.ProductTypeClick(productSubtype2);
     }
 
-    @Затем("^покупатель осуществляет фильтрацию товаров$")
+    @Затем("^покупатель осуществляет фильтрацию товаров по наличию$")
     public void CustomerFiltersProduct()
     {
-        //переписать эти методы
-        catalogPage.InStockFilterClick();
-        catalogPage.FilterBtnClick();
+        //для примера
+        this.catalogPage.InStockFilterClick();
+        this.catalogPage.FilterBtnClick();
     }
 
     @И("выбирает желаемые товары")
     public void ChooseDesiredProduct()
     {
-        catalogPage.GetDriver().findElement(By.xpath("//div[@class=\"indexGoods__item\"][1]//a[text()=\"Купить\"]")).click();
-        catalogPage.CloseModalWindowBtnClick();
+        this.catalogPage.GetDriver().findElement(By.xpath("//div[@class=\"indexGoods__item\"][1]//a[text()=\"Купить\"]")).click();
+        this.catalogPage.CloseModalWindowBtnClick();
     }
 
     @Затем("^покупатель переходит на страницу оформления заказов$")
     public void CustomerGoesToBasket()
     {
-        layoutPage.BasketBtnClick();
+        this.basketPage=layoutPage.BasketBtnClick();
+        this.basketPage.OrderingBtnClick();
+    }
+
+    @И("заполняет данные для оформления заказа")
+    public void FillsDataForOrdering()
+    {
+        this.basketPage.SetContactInformation("Иванов Иван Иванович","88005553535");
+        this.basketPage.SetDeliveryAddress("Севастополь, ул.Уличная 23");
+        System.out.println("Заказ оформлен");
     }
 
 ////div[@class="indexGoods__item"][1]//a[contains(@title,"Купить")]

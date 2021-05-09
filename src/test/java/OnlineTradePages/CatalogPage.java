@@ -5,9 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import javax.swing.text.Style;
-import java.util.ArrayList;
-
 public class CatalogPage extends LayoutPage
 {
     @FindBy(xpath = "//span[@class=\"firstLetterCap\" and contains(text(),\"в наличии\")]")
@@ -66,9 +63,6 @@ public class CatalogPage extends LayoutPage
          return Math.ceil(totalAmountProduct/totalProductOnOnePage);
     }
 
-    public void FilterBtnClick()
-    {
-        this.filterBtn.click();
-    }
+    public void FilterBtnClick() { this.filterBtn.click(); }
 
 }
