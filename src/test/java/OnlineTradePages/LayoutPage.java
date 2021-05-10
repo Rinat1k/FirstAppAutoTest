@@ -24,6 +24,9 @@ public class LayoutPage
      @FindBy(xpath = "//div[contains(@class,\"basketCover\")]")
      private WebElement basketBtn;
 
+     @FindBy(xpath = "//span[@class=\"itemCount\"]")
+     private WebElement itemCountInBasket;
+
      public LayoutPage(WebDriver driver)
      {
           this.driver = driver;
@@ -40,6 +43,11 @@ public class LayoutPage
      public void CatalogBtnClick()
      {
           this.catalogBtn.click();
+     }
+
+     public int GetItemCountInBasket()
+     {
+          return Integer.parseInt(this.itemCountInBasket.getText());
      }
 
      public BasketPage BasketBtnClick()

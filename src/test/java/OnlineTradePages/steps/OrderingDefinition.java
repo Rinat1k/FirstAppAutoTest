@@ -6,7 +6,9 @@ import OnlineTradePages.LayoutPage;
 import OnlineTradePages.SignInPage;
 import config.ConfigProperties;
 import core.TestBase;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.ru.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -27,6 +29,14 @@ public class OrderingDefinition extends TestBase
         System.out.println("Начало теста...");
         this.Start();
         this.layoutPage = new LayoutPage(this.GetDriver());
+    }
+
+    @After
+    public void TearDown(Scenario scenario) {
+        if (scenario.isFailed())
+        {
+            super.TakeAScreenshot(scenario.getName());
+        }
     }
 
     @Дано("^покупатель переходит на главную страницу$")
@@ -62,7 +72,7 @@ public class OrderingDefinition extends TestBase
         this.layoutPage.CatalogBtnClick();
     }
 
-    @И("выбирает желаемую категорию: {string}")
+    @И("выбирает желаемую категорию - {string}")
     public void ChooseDesiredCategory(String category)
     {
         this.catalogPage=this.layoutPage.CategoryClick(category);
@@ -89,6 +99,8 @@ public class OrderingDefinition extends TestBase
     {
         this.catalogPage.GetDriver().findElement(By.xpath("//div[@class=\"indexGoods__item\"][1]//a[text()=\"Купить\"]")).click();
         this.catalogPage.CloseModalWindowBtnClick();
+        //инициирование бага
+        Assert.assertEquals(2, layoutPage.GetItemCountInBasket());
     }
 
     @Затем("^покупатель переходит на страницу оформления заказов$")
@@ -103,8 +115,6 @@ public class OrderingDefinition extends TestBase
     {
         this.basketPage.SetContactInformation("Иванов Иван Иванович","88005553535");
         this.basketPage.SetDeliveryAddress("Севастополь, ул.Уличная 23");
-        System.out.println("Заказ оформлен");
     }
 
-////div[@class="indexGoods__item"][1]//a[contains(@title,"Купить")]
 }

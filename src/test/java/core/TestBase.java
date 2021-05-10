@@ -23,13 +23,13 @@ public class TestBase
         Start();
     }
 
-    public void TakeAScreenshot()
+    public void TakeAScreenshot(String screenshotName)
     {
         try
         {
             TakesScreenshot scrShot =((TakesScreenshot)driver);
             File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-            File DestFile=new File(ConfigProperties.GetProperty("pathToScreenshotsDirectory")+"/bug.png");
+            File DestFile=new File(ConfigProperties.GetProperty("pathToScreenshotsDirectory")+"/"+screenshotName+".png");
             FileUtils.copyFile(SrcFile, DestFile);
         }
         catch (IOException e)
@@ -43,7 +43,7 @@ public class TestBase
         System.setProperty("webdriver.chrome.driver", ConfigProperties.GetProperty("pathToChromeDriver"));
         this.driver = new ChromeDriver();
         this.driver.manage().window().maximize();
-        this.driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         this.driver.get(ConfigProperties.GetProperty("defaultUrlForOnlineTrade"));
         PageFactory.initElements(driver, this);
     }

@@ -1,9 +1,14 @@
 package OnlineTradePages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class CatalogPage extends LayoutPage
 {
@@ -31,7 +36,9 @@ public class CatalogPage extends LayoutPage
 
     public void CloseModalWindowBtnClick()
     {
-        this.closeModalWindowBtn.click();
+        WebElement element = super.GetDriver().findElement(By.xpath("//a[@title=\"Закрыть окно\"]"));
+        JavascriptExecutor jse = (JavascriptExecutor)super.GetDriver();
+        element.click();
     }
     public int GetTotalProductOnOnePage()
     {
