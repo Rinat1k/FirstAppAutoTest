@@ -100,7 +100,7 @@ public class OrderingDefinition extends TestBase
         this.catalogPage.GetDriver().findElement(By.xpath("//div[@class=\"indexGoods__item\"][1]//a[text()=\"Купить\"]")).click();
         this.catalogPage.CloseModalWindowBtnClick();
         //инициирование бага
-        Assert.assertEquals(2, layoutPage.GetItemCountInBasket());
+        //Assert.assertEquals(2, layoutPage.GetItemCountInBasket());
     }
 
     @Затем("^покупатель переходит на страницу оформления заказов$")

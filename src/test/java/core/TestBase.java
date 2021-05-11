@@ -9,6 +9,10 @@ import org.openqa.selenium.support.PageFactory;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class TestBase
@@ -18,7 +22,7 @@ public class TestBase
 
     public WebDriver  GetDriver(){return driver;}
 
-    public void TestBase()
+    public TestBase()
     {
         Start();
     }
@@ -27,9 +31,10 @@ public class TestBase
     {
         try
         {
+            String curretTime = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
             TakesScreenshot scrShot =((TakesScreenshot)driver);
             File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-            File DestFile=new File(ConfigProperties.GetProperty("pathToScreenshotsDirectory")+"/"+screenshotName+".png");
+            File DestFile=new File(ConfigProperties.GetProperty("pathToScreenshotsDirectory")+"/"+screenshotName+curretTime+".png");
             FileUtils.copyFile(SrcFile, DestFile);
         }
         catch (IOException e)
