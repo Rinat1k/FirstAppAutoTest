@@ -6,12 +6,9 @@ import OnlineTradePages.LayoutPage;
 import OnlineTradePages.SignInPage;
 import config.ConfigProperties;
 import core.TestBase;
-import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
 import io.cucumber.java.ru.*;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 
 public class OrderingDefinition extends TestBase
 {
@@ -26,95 +23,95 @@ public class OrderingDefinition extends TestBase
     @Before
     public void Init()
     {
-        System.out.println("Начало теста...");
-        this.Start();
+        this.start(ConfigProperties.GetProperty("defaultUrlForOnlineTrade"));
         this.layoutPage = new LayoutPage(this.GetDriver());
     }
 
-    @After
+   /*ненужный кусок, так как селенид сам делает скриншоты...
+   @After
     public void TearDown(Scenario scenario) {
         if (scenario.isFailed())
         {
-            super.TakeAScreenshot(scenario.getName());
+            super.takeAScreenshot(scenario.getName());
         }
-    }
+    }*/
 
     @Дано("^покупатель переходит на главную страницу$")
     public void CustomerGoesToMainPage()
     {
-        this.layoutPage.HeaderLogoClick();
+        this.layoutPage.headerLogoClick();
     }
 
     @Если("^покупатель открывает модальное окно авторизации$")
     public void RegisteredCustomerOpenAuthModalWindow()
     {
-        this.signInPage=layoutPage.LoginBtnClick();
+        this.signInPage=layoutPage.loginBtnClick();
     }
 
     @И("^вводит корректные реквизиты для входа$")
     public void RegisteredCustomerEntersCorrectCredentials()
     {
-        this.signInPage.SetEmailInput(ConfigProperties.GetProperty("signInEmail"));
-        this.signInPage.SetPasswordInput(ConfigProperties.GetProperty("signInPassword"));
-        this.signInPage.AutoLoginCheckBoxClick();
-        this.signInPage.SignInBtnClick();
+        this.signInPage.setEmailInput(ConfigProperties.GetProperty("signInEmail"));
+        this.signInPage.setPasswordInput(ConfigProperties.GetProperty("signInPassword"));
+        this.signInPage.autoLoginCheckBoxClick();
+        this.signInPage.signInBtnClick();
     }
 
     @То("^покупатель успешно авторизуется$")
     public void CustomerAuthorized()
     {
-        Assert.assertTrue(this.signInPage.IsElementPresent(By.xpath("//a[@href=\"/member/\"]")));
+        Assert.assertTrue(layoutPage.isAuthorized());
+        //проверка, того что авторизация прошла успешно и веб элемент "Вход в личный кабинет" изменился на "Профиль"
     }
 
     @Затем("^покупатель открывает каталог$")
     public void CustomerOpensCatalog()
     {
-        this.layoutPage.CatalogBtnClick();
+        this.layoutPage.catalogBtnClick();
     }
 
     @И("выбирает желаемую категорию - {string}")
     public void ChooseDesiredCategory(String category)
     {
-        this.catalogPage=this.layoutPage.CategoryClick(category);
+        this.catalogPage=this.layoutPage.categoryClick(category);
     }
 
     @И("желаемый тип - {string} и подтипы товара - {string} {string}")
     public void ChooseDesiredProductType(String productType, String productSubtype1,String productSubtype2)
     {
-        this.catalogPage.ProductTypeClick(productType);
-        this.catalogPage.ProductTypeClick(productSubtype1);
-        this.catalogPage.ProductTypeClick(productSubtype2);
+        this.catalogPage.productTypeClick(productType);
+        this.catalogPage.productTypeClick(productSubtype1);
+        this.catalogPage.productTypeClick(productSubtype2);
     }
 
     @Затем("^покупатель осуществляет фильтрацию товаров по наличию$")
     public void CustomerFiltersProduct()
     {
         //для примера
-        this.catalogPage.InStockFilterClick();
-        this.catalogPage.FilterBtnClick();
+        this.catalogPage.inStockFilterClick();
+        this.catalogPage.filterBtnClick();
     }
 
     @И("выбирает желаемые товары")
     public void ChooseDesiredProduct()
     {
-        this.catalogPage.GetDriver().findElement(By.xpath("//div[@class=\"indexGoods__item\"][1]//a[text()=\"Купить\"]")).click();
-        this.catalogPage.CloseModalWindowBtnClick();
+        this.catalogPage.addFirstProductToCart();
         //инициирование бага
-        //Assert.assertEquals(2, layoutPage.GetItemCountInBasket());
+        //Assert.assertEquals(2, layoutPage.getItemCountInBasket());
     }
 
     @Затем("^покупатель переходит на страницу оформления заказов$")
     public void CustomerGoesToBasket()
     {
-        this.basketPage=layoutPage.BasketBtnClick();
-        this.basketPage.OrderingBtnClick();
+        this.basketPage=layoutPage.basketBtnClick();
+        this.basketPage.orderingBtnClick();
     }
 
     @И("заполняет данные для оформления заказа")
     public void FillsDataForOrdering()
     {
-        this.basketPage.SetContactInformation("Иванов Иван Иванович","88005553535");
-        this.basketPage.SetDeliveryAddress("Севастополь, ул.Уличная 23");
+        this.basketPage.setContactInformation("Иванов Иван Иванович","88005553535");
+        this.basketPage.setDeliveryAddress("Севастополь, ул.Уличная 23");
+        this.finish();
     }
-
 }

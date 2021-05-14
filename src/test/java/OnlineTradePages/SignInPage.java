@@ -1,34 +1,31 @@
 package OnlineTradePages;
 
-import core.TestBase;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+
+import static com.codeborne.selenide.Selectors.byXpath;
+import static com.codeborne.selenide.Selenide.$;
 
 public class SignInPage extends LayoutPage
 {
-    @FindBy(xpath = "//input[@name=\"login\"]")
-    WebElement emailInput;
+    SelenideElement emailInput = $(byXpath("//input[@name=\"login\"]"));
 
-    @FindBy(xpath = "//input[@name=\"password\"]")
-    WebElement passwordInput;
+    SelenideElement passwordInput = $(byXpath("//input[@name=\"password\"]"));
 
-    @FindBy(xpath = "//label[@for=\"autologin\"]")
-    WebElement autoLoginCheckBox;
+    SelenideElement autoLoginCheckBox = $(byXpath("//label[@for=\"autologin\"]"));
 
-    @FindBy(xpath = "//input[@value=\"Вход\"]")
-    WebElement signInBtn;
+    SelenideElement signInBtn = $(byXpath("//input[@value=\"Вход\"]"));
 
     public SignInPage(WebDriver driver)
     {
         super(driver);
     }
 
-    public void SetEmailInput(String loginVal) { this.emailInput.sendKeys(loginVal); }
+    public void setEmailInput(String loginVal) { this.emailInput.setValue(loginVal);}
 
-    public void SetPasswordInput(String passwordVal) { this.passwordInput.sendKeys(passwordVal); }
+    public void setPasswordInput(String passwordVal) { this.passwordInput.setValue(passwordVal); }
 
-    public void AutoLoginCheckBoxClick() {this.autoLoginCheckBox.click();}
+    public void autoLoginCheckBoxClick() {this.autoLoginCheckBox.click();}
 
-    public void SignInBtnClick() {this.signInBtn.click();}
+    public void signInBtnClick() {this.signInBtn.click();}
 }

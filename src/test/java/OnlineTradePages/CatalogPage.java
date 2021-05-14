@@ -1,31 +1,23 @@
 package OnlineTradePages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+import static com.codeborne.selenide.Selectors.byXpath;
+import static com.codeborne.selenide.Selenide.$;
 
 public class CatalogPage extends LayoutPage
 {
-    @FindBy(xpath = "//span[@class=\"firstLetterCap\" and contains(text(),\"в наличии\")]")
-    private WebElement inStockFilter;
+    private SelenideElement inStockFilter = $(byXpath("//span[@class=\"firstLetterCap\" and contains(text(),\"в наличии\")]"));
 
-    @FindBy(xpath = "//a[@title=\"Подобрать\"]")
-    private WebElement filterBtn;
+    private SelenideElement filterBtn = $(byXpath("//a[@title=\"Подобрать\"]"));
 
-    @FindBy(xpath = "//div[@class=\"paginator__count\"]")
-    private WebElement paginatorCount;
+    private SelenideElement paginatorCount = $(byXpath("//div[@class=\"paginator__count\"]"));
 
-    @FindBy(xpath = "//a[contains(@class,\"js__paginator__linkNext\")]")
-    private WebElement nextPageBtn;
+    private SelenideElement nextPageBtn = $(byXpath("//a[contains(@class,\"js__paginator__linkNext\")]"));
 
-    @FindBy(xpath = "//a[@title=\"Закрыть окно\"]")
-    private WebElement closeModalWindowBtn;
+    private SelenideElement closeModalWindowBtn = $(byXpath("//a[@title=\"Закрыть окно\"]"));
 
     private int totalProductOnOnePage;
 
@@ -34,13 +26,9 @@ public class CatalogPage extends LayoutPage
         super(driver);
     }
 
-    public void CloseModalWindowBtnClick()
-    {
-        WebElement element = super.GetDriver().findElement(By.xpath("//a[@title=\"Закрыть окно\"]"));
-        JavascriptExecutor jse = (JavascriptExecutor)super.GetDriver();
-        element.click();
-    }
-    public int GetTotalProductOnOnePage()
+    public void closeModalWindowBtnClick() { $(byXpath("//a[@title=\"Закрыть окно\"]")).shouldBe(Condition.visible).click(); }
+
+    public int getTotalProductOnOnePage()
     {
         //возвращает количество товаров на одной странице
         return this.totalProductOnOnePage=Integer.parseInt(this.paginatorCount.getText()
@@ -48,28 +36,27 @@ public class CatalogPage extends LayoutPage
                                                                               .split("–")[1]);
     }
 
-    public void ProductTypeClick(String productType)
+    public void productTypeClick(String productType)
     {
-        super.GetDriver().findElement(By.xpath("//img[@alt=\""+productType+"\"]")).click();
+        $(byXpath("//img[@alt=\""+productType+"\"]")).click();
     }
 
-    public void NextPageBtnClick()
-    {
-        this.nextPageBtn.click();
-    }
+    public void nextPageBtnClick() { this.nextPageBtn.click(); }
 
-    public void InStockFilterClick()
-    {
-        this.inStockFilter.click();
-    }
+    public void inStockFilterClick() { this.inStockFilter.click(); }
 
-    public double GetMaxNumberPage()
+    public double getMaxNumberPage()
     {
          double totalAmountProduct = Integer.parseInt(this.paginatorCount.getText().split(" ")[this.paginatorCount.getText().split(" ").length-1]);
-         double totalProductOnOnePage = this.GetTotalProductOnOnePage();
+         double totalProductOnOnePage = this.getTotalProductOnOnePage();
          return Math.ceil(totalAmountProduct/totalProductOnOnePage);
     }
 
-    public void FilterBtnClick() { this.filterBtn.click(); }
+    public void filterBtnClick() { this.filterBtn.click(); }
 
+    public void addFirstProductToCart()
+    {
+        $(byXpath("//div[@class=\"indexGoods__item\"][1]//a[text()=\"Купить\"]")).click();
+        this.closeModalWindowBtnClick();
+    }
 }

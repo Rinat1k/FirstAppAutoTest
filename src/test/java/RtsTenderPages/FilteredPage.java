@@ -62,7 +62,7 @@ public class FilteredPage extends TestBase
     public boolean NextBtnPageIsPresent()
     {
         LayoutPage layoutPage = new LayoutPage(super.GetDriver());
-       return (layoutPage.IsElementPresent(By.xpath("//a[@class=\"page-link next\"]")));
+       return (layoutPage.isElementPresent(By.xpath("//a[@class=\"page-link next\"]")));
     }
 
     public void NextBtnPageClick()
@@ -107,7 +107,7 @@ public class FilteredPage extends TestBase
         int purchaseNumberElementSize;
         WebElement activePurchaseNumberElement;
         for (int i=0;i<cardItemSize;i++,cardItemIndex++) {
-            if (layoutPage.IsElementPresent(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]")))
+            if (layoutPage.isElementPresent(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]")))
             {
                 showMore = super.GetDriver().findElement(By.xpath("//div[@class=\"cards\"]["+cardItemIndex+"]//span[@class=\"more-position show-more\"]"));
                 showMore.click();

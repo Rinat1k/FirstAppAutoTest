@@ -1,90 +1,73 @@
 package OnlineTradePages;
 
-import core.TestBase;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+
+import static com.codeborne.selenide.Selectors.byXpath;
+import static com.codeborne.selenide.Selenide.$;
 
 public class LayoutPage
 {
      private WebDriver driver;
 
-     @FindBy(xpath = "//a[@href=\"/member/login.html\"]")
-     private WebElement loginBtn;
+     private SelenideElement loginBtn = $(byXpath("//a[@href=\"/member/login.html\"]"));
 
-     @FindBy(xpath = "//div[@class=\"header__logo\"]")
-     private WebElement headerLogo;
+     private SelenideElement headerLogo = $(byXpath("//div[@class=\"header__logo\"]"));
 
-     @FindBy(xpath = "//a[@href=\"/catalogue/\"]")
-     private WebElement catalogBtn;
+     private SelenideElement catalogBtn = $(byXpath("//a[@href=\"/catalogue/\"]"));
 
-     @FindBy(xpath = "//div[contains(@class,\"basketCover\")]")
-     private WebElement basketBtn;
+     private SelenideElement basketBtn = $(byXpath("//div[contains(@class,\"basketCover\")]"));
 
-     @FindBy(xpath = "//span[@class=\"itemCount\"]")
-     private WebElement itemCountInBasket;
+     private SelenideElement itemCountInBasket = $(byXpath("//span[@class=\"itemCount\"]"));
 
      public LayoutPage(WebDriver driver)
      {
           this.driver = driver;
-          PageFactory.initElements(this.driver,this);
-     }
-
-     public WebDriver GetDriver()
-     {
-          return driver;
      }
 
      public LayoutPage() { }
 
-     public void CatalogBtnClick()
+     public void catalogBtnClick()
      {
           this.catalogBtn.click();
      }
 
-     public int GetItemCountInBasket()
+     public int getItemCountInBasket()
      {
           return Integer.parseInt(this.itemCountInBasket.getText());
      }
 
-     public BasketPage BasketBtnClick()
+     public BasketPage basketBtnClick()
      {
           this.basketBtn.click();
           return new BasketPage(this.driver);
      }
 
-     public SignInPage LoginBtnClick()
+     public SignInPage loginBtnClick()
      {
-          this.loginBtn.findElement(By.xpath("//a[@href=\"/member/login.html\"]"));
           this.loginBtn.click();
           return new SignInPage(this.driver);
      }
 
-     public void HeaderLogoClick()
+     public void headerLogoClick()
      {
           this.headerLogo.click();
      }
 
-     public CatalogPage CategoryClick(String categoryTitle)
+     public CatalogPage categoryClick(String categoryTitle)
      {
-          driver.findElement(By.xpath("//a[contains(text(),\""+categoryTitle+"\")]")).click();
+          $(byXpath("//a[contains(text(),\""+categoryTitle+"\")]")).click();
           return new CatalogPage(this.driver);
      }
 
-     public boolean IsElementPresent(By element)
+     public boolean isAuthorized()
      {
-          try
-          {
-               Thread.sleep(1500);
-               driver.findElement(element);
-               return true;
-          }
-          catch (NoSuchElementException | InterruptedException e)
-          {
-               return false;
-          }
+          return this.isElementPresent(By.xpath("//a[@href=\"/member/\"]"));
+     }
+
+     public boolean isElementPresent(By element)
+     {
+                return $(element).exists();
      }
 }

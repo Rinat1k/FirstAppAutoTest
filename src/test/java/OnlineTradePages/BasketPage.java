@@ -1,41 +1,39 @@
 package OnlineTradePages;
 
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+
+import static com.codeborne.selenide.Selectors.byXpath;
+import static com.codeborne.selenide.Selenide.$;
 
 public class BasketPage extends LayoutPage
 {
-    @FindBy (xpath = "//input[contains(@value,\"Оформить заказ\")]")
-    private WebElement orderingBtn;
+    private SelenideElement orderingBtn = $(byXpath("//input[contains(@value,\"Оформить заказ\")]"));
 
-    @FindBy (xpath = "//input[@title=\"Контактное лицо\"]")
-    private WebElement contactInformationInput;
+    private SelenideElement contactInformationInput = $(byXpath("//input[@title=\"Контактное лицо\"]"));
 
-    @FindBy (xpath = "//input[@title=\"Мобильный телефон\"]")
-    private WebElement phoneNumberInput;
+    private SelenideElement phoneNumberInput=$(byXpath("//input[@title=\"Мобильный телефон\"]"));
 
-    @FindBy (xpath = "//textarea[@title=\"Адрес доставки\"]")
-    private WebElement deliveryAddress;
+    private SelenideElement deliveryAddress=$(byXpath("//textarea[@title=\"Адрес доставки\"]"));
 
     public BasketPage(WebDriver driver)
     {
         super(driver);
     }
 
-    public void SetContactInformation(String fio,String phoneNumber)
+    public void setContactInformation(String fio, String phoneNumber)
     {
         this.contactInformationInput.clear();
-        this.contactInformationInput.sendKeys(fio);
-        this.phoneNumberInput.sendKeys(phoneNumber);
+        this.contactInformationInput.setValue(fio);
+        this.phoneNumberInput.setValue(phoneNumber);
     }
 
-    public void SetDeliveryAddress(String deliveryAddress)
+    public void setDeliveryAddress(String deliveryAddress)
     {
-        this.deliveryAddress.sendKeys(deliveryAddress);
+        this.deliveryAddress.setValue(deliveryAddress);
     }
 
-    public void OrderingBtnClick()
+    public void orderingBtnClick()
     {
         this.orderingBtn.click();
     }
